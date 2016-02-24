@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hello.mapper.UserInfoMapper">
+    <insert id="create" parameterType="hello.mapper.UserInfo">
+        INSERT INTO user_info (userid, passwd, name, createtime)
+        VALUES (#{userid}, md5(#{passwd}), #{name}, current_timestamp)
+    </insert>
+    <select id="list" resultType="hello.mapper.UserInfo">
+        select * from user_info
+    </select>
+    <select id="get" parameterType="String" resultType="hello.mapper.UserInfo">
+        select * from user_info where userid = #{name}
+    </select>
+</mapper>
