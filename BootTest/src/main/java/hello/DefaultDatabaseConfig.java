@@ -12,8 +12,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -36,7 +34,6 @@ public class DefaultDatabaseConfig {
  
     @Bean
     public PlatformTransactionManager transactionManager() {
-        // PlatformTransactionManager의 구현체
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(dataSource());
         transactionManager.setGlobalRollbackOnParticipationFailure(false);
         return transactionManager;
@@ -46,21 +43,9 @@ public class DefaultDatabaseConfig {
     public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
-        //factoryBean.setConfigurationProperties(mybatisProperties());
-
         return factoryBean;
     }
- 
-//    @Bean
-//    public SqlSessionFactory sqlSessionFactory() throws Exception {
-//        SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
-//        sessionFactoryBean.setDataSource(dataSource());
-//        //Resource[] arrResource = new PathMatchingResourcePatternResolver()
-//        //                            .getResources("classpath:hello/mapper/*Mapper.xml");
-//        //sessionFactoryBean.setMapperLocations(arrResource);
-//        return sessionFactoryBean.getObject();
-//    }
-    
+
     @Bean
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate( sqlSessionFactory);

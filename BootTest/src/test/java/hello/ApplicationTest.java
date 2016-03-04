@@ -3,6 +3,7 @@ package hello;
 import hello.mapper.TestMapper;
 import hello.mapper.UserInfo;
 import hello.mapper.UserInfoMapper;
+import hello.service.UserService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,6 +17,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -32,6 +35,9 @@ public class ApplicationTest {
     
     @Autowired
     private UserInfoMapper userinfoMapper;
+    
+    @Autowired
+    private UserService userService;
     
     @Test
     public void testConnection() throws SQLException {
@@ -58,11 +64,13 @@ public class ApplicationTest {
     
     @Test
     public void userCreate() throws Exception {
+        
         UserInfo user = new UserInfo();
         user.setUserid("sofriend2");
-        user.setPasswd("rhtmxm");
-        user.setName("ÀÌÀçÈ¯2");
+        user.setPasswd( new StandardPasswordEncoder().encode("test"));
+        user.setName("í…ŒìŠ¤íŠ¸");
         userinfoMapper.create( user);
+        System.out.println( user.getPasswd());
     }
     
     @Test
@@ -72,5 +80,10 @@ public class ApplicationTest {
         for( UserInfo info : list) {
             System.out.println( info.getUserid());
         }
+    }
+    
+    @Test
+    public void loginTest() throws Exception {
+        userService.loadUserByUsername( "test");
     }
 }
